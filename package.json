@@ -1,0 +1,47 @@
+{
+	"name": "tdd-katas",
+	"version": "1.0.0",
+	"description": "Following along the book \"Modern C++ Programming with TDD\", but in TypeScript ",
+	"scripts": {
+		"prepare": "is-ci || husky install",
+		"start": "run-s test:watch",
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"test:ci": "jest --runInBand",
+		"prettify": "prettier . --write",
+		"lint": "eslint 'src/**/*.ts' --max-warnings=0",
+		"typecheck": "tsc --diagnostics",
+		"check": "run-p lint typecheck"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/stressgc/tdd-katas.git"
+	},
+	"author": "stressgc | Georges Cosson",
+	"license": "UNLICENSED",
+	"bugs": {
+		"url": "https://github.com/stressgc/tdd-katas/issues"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.16.5",
+		"@babel/preset-env": "7.3.4",
+		"@babel/preset-react": "^7.16.5",
+		"@babel/preset-typescript": "^7.16.5",
+		"@commitlint/cli": "^12.1.1",
+		"@commitlint/config-conventional": "^12.1.1",
+		"@types/jest": "^27.0.3",
+		"@typescript-eslint/eslint-plugin": "^4.14.0",
+		"@typescript-eslint/parser": "^4.14.0",
+		"babel-jest": "^27.4.5",
+		"eslint": "^7.3.1",
+		"eslint-config-prettier": "^8.2.0",
+		"eslint-plugin-import": "^2.22.0",
+		"husky": "^6.0.0",
+		"is-ci": "^3.0.0",
+		"jest": "^27.4.5",
+		"jest-junit": "^13.0.0",
+		"npm-run-all": "^4.1.5",
+		"prettier": "^2.2.1",
+		"typescript": "^4.1.3"
+	}
+}
