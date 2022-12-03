@@ -8,7 +8,7 @@ module.exports = {
 	collectCoverage: false,
 
 	// An array of file extensions your modules use
-	moduleFileExtensions: ["ts"],
+	moduleFileExtensions: ["ts", "js"],
 
 	// A map from regular expressions to paths to transformers
 	transform: {
