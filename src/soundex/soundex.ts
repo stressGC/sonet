@@ -22,23 +22,43 @@
  * three numbers. If there are four or more numbers, retain only the first three.
  */
 
+const soundexEncodingMaxChars = 4
+
 export function encode(word: string) {
 	const uppercasedWord = word.toUpperCase()
-	return zeroPad(encodeHead(uppercasedWord) + encodeTail(uppercasedWord))
+	const encodedHead = encodeHead(uppercasedWord)
+	return zeroPad(encodedHead + encodeDigits(uppercasedWord))
 }
 
 function encodeHead(word: string) {
 	return word.charAt(0)
 }
 
-function encodeTail(word: string) {
-	const [, ...tailChars] = word
+function encodeDigits(word: string) {
+	const [head, ...tail] = word
 
-	return tailChars.map(replaceConsonantByDigit).join("")
+	let encoding = "" // replaceConsonantByDigit(head) ?? ""
+	for (const letter of tail) {
+		if (isComplete(encoding)) {
+			break
+		}
+
+		const encodedLetter = replaceConsonantByDigit(letter)
+		console.log(encoding, encodedLetter)
+		if (encodedLetter !== encoding.at(-1)) {
+			encoding += encodedLetter
+		}
+	}
+
+	return encoding
+}
+
+function isComplete(encodedDigits: string) {
+	return encodedDigits.length >= soundexEncodingMaxChars - 1
 }
 
 function zeroPad(encodedWord: string) {
-	return encodedWord.padEnd(4, "0")
+	return encodedWord.padEnd(soundexEncodingMaxChars, "0")
 }
 
 function replaceConsonantByDigit(consonant: string) {
