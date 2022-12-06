@@ -35,34 +35,36 @@ function encodeHead(word: string) {
 }
 
 function encodeDigits(word: string) {
-	const [head, ...tail] = word
-
-	let encoding = "" // replaceConsonantByDigit(head) ?? ""
-	for (const letter of tail) {
-		if (isComplete(encoding)) {
-			break
+	const encodedDigits = [...word].reduce((currEncodedDigits, letter) => {
+		if (isComplete(currEncodedDigits)) {
+			return currEncodedDigits
 		}
 
-		const encodedLetter = replaceConsonantByDigit(letter)
-		console.log(encoding, encodedLetter)
-		if (encodedLetter !== encoding.at(-1)) {
-			encoding += encodedLetter
+		const encodedLetter = findCorrespondingEncodingDigit(letter)
+		if (!encodedLetter) {
+			return currEncodedDigits
 		}
-	}
 
-	return encoding
+		if (encodedLetter === currEncodedDigits.at(-1)) {
+			return currEncodedDigits
+		}
+
+		return `${currEncodedDigits}${encodedLetter}`
+	}, "")
+
+	return encodedDigits.slice(1)
 }
 
 function isComplete(encodedDigits: string) {
-	return encodedDigits.length >= soundexEncodingMaxChars - 1
+	return encodedDigits.length >= soundexEncodingMaxChars
 }
 
 function zeroPad(encodedWord: string) {
 	return encodedWord.padEnd(soundexEncodingMaxChars, "0")
 }
 
-function replaceConsonantByDigit(consonant: string) {
-	const consonantDigitEncodingMap: Record<string, string[]> = {
+function findCorrespondingEncodingDigit(uppercasedLetter: string) {
+	const digitToLetterEncodingMap: Record<string, string[]> = {
 		"1": ["B", "F", "P", "V"],
 		"2": ["C", "G", "J", "K", "Q", "S", "X", "Z"],
 		"3": ["D", "T"],
@@ -70,7 +72,9 @@ function replaceConsonantByDigit(consonant: string) {
 		"5": ["M", "N"],
 		"6": ["R"],
 	}
-	return Object.keys(consonantDigitEncodingMap).find((digit) => {
-		return consonantDigitEncodingMap[digit]?.includes(consonant)
-	})
+	return (
+		Object.keys(digitToLetterEncodingMap).find((digit) => {
+			return digitToLetterEncodingMap[digit]?.includes(uppercasedLetter)
+		}) ?? ""
+	)
 }

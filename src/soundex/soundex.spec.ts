@@ -11,7 +11,7 @@ describe("Soundex", () => {
 
 	it("replaces consonant with digits", () => {
 		expect(soundex.encode("Gb")).toBe("G100")
-		expect(soundex.encode("Gc")).toBe("G200")
+		expect(soundex.encode("Gr")).toBe("G600")
 	})
 
 	it("is case insensitive", () => {
@@ -19,7 +19,7 @@ describe("Soundex", () => {
 	})
 
 	it("ignores vowel-like letters", () => {
-		expect(soundex.encode("GaAeEiIoOuUhHyYcdl")).toBe("G234")
+		expect(soundex.encode("GaAeEiIoOuUhHyYrdl")).toBe("G634")
 	})
 
 	it("ignores non-alphanumerical characters", () => {
@@ -38,7 +38,7 @@ describe("Soundex", () => {
 		expect(soundex.encode("Gbfpv")).toBe("G100")
 	})
 
-	it.skip("combines codes when 2nd letter duplicates 1st", () => {
+	it("combines codes when 2nd letter duplicates 1st", () => {
 		expect(soundex.encode("Bbcd")).toBe("B230")
 	})
 })
