@@ -41,4 +41,8 @@ describe("Soundex", () => {
 	it("combines codes when 2nd letter duplicates 1st", () => {
 		expect(soundex.encode("Bbcd")).toBe("B230")
 	})
+
+	it("doesn't combine duplicate encodings separated by vowels", () => {
+		expect(soundex.encode("Jbob")).toBe("J110")
+	})
 })

@@ -1,3 +1,4 @@
+import { isVowel } from "../stringUtils"
 /**
  * Soundex algorithm
  * @link https://wikipedia.org/wiki/Soundex
@@ -35,7 +36,7 @@ function encodeHead(word: string) {
 }
 
 function encodeDigits(word: string) {
-	const encodedDigits = [...word].reduce((currEncodedDigits, letter) => {
+	const encodedDigits = [...word].reduce((currEncodedDigits, letter, letterIndex) => {
 		if (isComplete(currEncodedDigits)) {
 			return currEncodedDigits
 		}
@@ -45,7 +46,8 @@ function encodeDigits(word: string) {
 			return currEncodedDigits
 		}
 
-		if (encodedLetter === currEncodedDigits.at(-1)) {
+		const previousLetter = word[letterIndex - 1]
+		if (encodedLetter === currEncodedDigits.at(-1) && !isVowel(previousLetter)) {
 			return currEncodedDigits
 		}
 
