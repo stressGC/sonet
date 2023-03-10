@@ -1,4 +1,4 @@
-import { isVowel } from "../stringUtils"
+import { isVowel } from "./stringUtils"
 /**
  * Soundex algorithm
  * @link https://wikipedia.org/wiki/Soundex
