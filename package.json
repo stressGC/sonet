@@ -4,9 +4,10 @@
 	"description": "Following along the book \"Modern C++ Programming with TDD\", but in TypeScript ",
 	"scripts": {
 		"prepare": "is-ci || husky install",
-		"start": "run-s test:watch",
+		"start": "run-s test:social-network:watch",
 		"test": "jest",
 		"test:watch": "jest --watch",
+		"test:social-network:watch": "jest --watch 'social-network'",
 		"test:ci": "jest --runInBand",
 		"prettify": "prettier . --write",
 		"lint": "eslint 'src/**/*.ts' --max-warnings=0",
