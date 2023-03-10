@@ -57,7 +57,15 @@
 		// "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
 		"resolveJsonModule": true,
 		// "allowUmdGlobalAccess": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"jsx": "react-jsx",
+		"importsNotUsedAsValues": "error",
+		"baseUrl": "./" /* Base directory to resolve non-absolute module names. */,
+		"paths": {
+			"@application/*": ["src/social-network/application/*"],
+			"@domain/*": ["src/social-network/domain/*"],
+			"@infra/*": ["src/social-network/infra/*"]
+		}
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules"]
