@@ -1,3 +1,4 @@
+import { Message } from "@domain/message"
 import type { DateProvider } from "@application/providers/date.provider"
 import type { MessageRepository } from "@application/repositories/message.repository"
 
@@ -7,21 +8,8 @@ export class PostMessageUseCase {
 	constructor(private readonly messageRepository: MessageRepository, private readonly dateProvider: DateProvider) {}
 
 	async handle(command: PostMessageCommand) {
-		if (command.message.trim().length === 0) {
-			throw new EmptyMessageError()
-		}
-		if (command.message.length > 280) {
-			throw new MessageTooLongError()
-		}
+		const message = Message.from(command.id, command.author, command.message, this.dateProvider.now())
 
-		await this.messageRepository.save({
-			id: command.id,
-			author: command.author,
-			message: command.message,
-			publishedAt: this.dateProvider.now(),
-		})
+		await this.messageRepository.save(message)
 	}
 }
-
-export class MessageTooLongError extends Error {}
-export class EmptyMessageError extends Error {}

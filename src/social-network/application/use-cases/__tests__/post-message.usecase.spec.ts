@@ -1,13 +1,8 @@
-import { InMemoryMessageRepository } from "@infra/messageRepository.inmemory"
-import {
-	type PostMessageCommand,
-	PostMessageUseCase,
-	MessageTooLongError,
-	EmptyMessageError,
-} from "@application/use-cases/post-message.usecase"
-import { StubDateProvider } from "@infra/__tests__/date.stub.provider"
+import { InMemoryMessageRepository } from "@infra/InMemoryMessageRepository"
+import { type PostMessageCommand, PostMessageUseCase } from "@application/use-cases/post-message.usecase"
+import { StubDateProvider } from "@infra/__tests__/StubDateProvider"
 import { messageBuilder } from "@domain/__tests__/message.builder"
-import type { Message } from "@domain/message"
+import { EmptyMessageError, Message, MessageTooLongError } from "@domain/message"
 
 describe("Feature: post a message", () => {
 	let sut: SUT
@@ -79,7 +74,7 @@ describe("Feature: post a message", () => {
 				message: messageWith281Chars,
 			})
 
-			sut.thenRequestShouldBeDeniedWithError(new MessageTooLongError())
+			sut.thenErrorShouldBe(MessageTooLongError)
 		})
 	})
 
@@ -94,7 +89,7 @@ describe("Feature: post a message", () => {
 				message: emptyMessage,
 			})
 
-			sut.thenRequestShouldBeDeniedWithError(new EmptyMessageError())
+			sut.thenErrorShouldBe(EmptyMessageError)
 		})
 
 		test("Bob tries to post a message that only contains whitespace", async () => {
@@ -107,7 +102,7 @@ describe("Feature: post a message", () => {
 				message: onlyWhitespaceMessage,
 			})
 
-			sut.thenRequestShouldBeDeniedWithError(new EmptyMessageError())
+			sut.thenErrorShouldBe(EmptyMessageError)
 		})
 	})
 })
@@ -139,8 +134,8 @@ function createSut() {
 		thenMessagesShouldBe(messages: Array<Message>) {
 			expect(messageRepository.messages).toStrictEqual(messages)
 		},
-		thenRequestShouldBeDeniedWithError(errorInstance: Error) {
-			expect(error).toStrictEqual(errorInstance)
+		thenErrorShouldBe(errorInstance: new () => Error) {
+			expect(error).toBeInstanceOf(errorInstance)
 		},
 	}
 }

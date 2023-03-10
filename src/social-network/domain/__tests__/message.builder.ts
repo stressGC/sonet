@@ -1,11 +1,16 @@
-import type { Message } from "@domain/message"
+import { Message } from "@domain/message"
 
 export function messageBuilder({
 	id = "message_id",
 	author = "Author",
 	message = "some message",
 	publishedAt = new Date(0),
-}: Partial<Message> = {}) {
+}: Partial<{
+	id: string
+	author: string
+	message: string
+	publishedAt: Date
+}> = {}) {
 	const props = { id, author, message, publishedAt }
 	return {
 		withId(_id: string) {
@@ -33,12 +38,7 @@ export function messageBuilder({
 			})
 		},
 		build(): Message {
-			return {
-				id: props.id,
-				author: props.author,
-				message: props.message,
-				publishedAt: props.publishedAt,
-			}
+			return Message.from(props.id, props.author, props.message, props.publishedAt)
 		},
 	}
 }
