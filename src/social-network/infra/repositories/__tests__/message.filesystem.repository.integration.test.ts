@@ -1,9 +1,9 @@
 import { messageBuilder } from "@domain/__tests__/message.builder"
-import { FileSystemMessageRepository } from "@infra/FileSystemMessageRepository"
+import { FileSystemMessageRepository } from "@infra/repositories/message.filesystem.repository"
 import * as fs from "fs/promises"
 import path from "path"
 
-const testMessagesPath = path.join(__dirname, "test-messages.repository.json")
+const testMessagesPath = path.join(__dirname, "./messages.test.filesystem.repository.json")
 
 describe("FileSystemMessageRepository", () => {
 	beforeEach(async () => {
@@ -16,7 +16,7 @@ describe("FileSystemMessageRepository", () => {
 		await fileSystemMessageRepository.save(
 			messageBuilder()
 				.authoredBy("Georges")
-				.withId("m1")
+				.withId("message_1")
 				.publishedAt(new Date("15 Jan 2022"))
 				.withMessage("Test message")
 				.build(),
@@ -26,7 +26,7 @@ describe("FileSystemMessageRepository", () => {
 		const fileSystemMessages = JSON.parse(fileContent.toString())
 		expect(fileSystemMessages).toStrictEqual([
 			{
-				id: "m1",
+				id: "message_1",
 				publishedAt: "2022-01-14T23:00:00.000Z",
 				message: "Test message",
 				author: "Georges",

@@ -1,6 +1,6 @@
-import { InMemoryMessageRepository } from "@infra/InMemoryMessageRepository"
+import { InMemoryMessageRepository } from "@infra/repositories/message.inmemory.repository"
 import { type PostMessageCommand, PostMessageUseCase } from "@application/use-cases/post-message.usecase"
-import { StubDateProvider } from "@infra/__tests__/StubDateProvider"
+import { StubDateProvider } from "@infra/providers/__tests__/date.stub"
 import { messageBuilder } from "@domain/__tests__/message.builder"
 import { EmptyMessageError, Message, MessageTooLongError } from "@domain/message"
 
