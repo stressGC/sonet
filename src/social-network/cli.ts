@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 import { PostMessageUseCase, type PostMessageCommand } from "@application/use-cases/post-message.usecase"
 import { RealDateProvider } from "@infra/RealDateProvider"
-import { InMemoryMessageRepository } from "@infra/InMemoryMessageRepository"
 import { Command } from "commander"
+import { FileSystemMessageRepository } from "@infra/FileSystemMessageRepository"
+import path from "path"
 
-const messageRepository = new InMemoryMessageRepository()
+const testMessagesPath = path.join(__dirname, "messages.repository.json")
+
+const messageRepository = new FileSystemMessageRepository(testMessagesPath)
 const dateProvider = new RealDateProvider()
 const postMessageUseCase = new PostMessageUseCase(messageRepository, dateProvider)
 

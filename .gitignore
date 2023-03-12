@@ -8,3 +8,4 @@ jest-junit
 coverage
 .idea/
 dist/
+*.repository.json
