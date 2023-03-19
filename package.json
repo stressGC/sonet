@@ -10,7 +10,7 @@
 		"postbuild": "tsc-alias -p tsconfig.json",
 		"test": "jest",
 		"test:watch": "jest --watch",
-		"test:social-network:watch": "jest 'social-network' --",
+		"test:social-network:watch": "jest '**.spec.ts' --watch",
 		"test:ci": "jest --runInBand",
 		"prettify": "prettier . --write",
 		"lint": "eslint 'src/**/*.ts' --max-warnings=0",
@@ -34,6 +34,7 @@
 		"@commitlint/cli": "^12.1.1",
 		"@commitlint/config-conventional": "^12.1.1",
 		"@types/jest": "^27.0.3",
+		"@types/uuid": "^9.0.1",
 		"@typescript-eslint/eslint-plugin": "^4.14.0",
 		"@typescript-eslint/parser": "^4.14.0",
 		"babel-jest": "^27.4.5",
@@ -52,6 +53,7 @@
 		"typescript": "^4.1.3"
 	},
 	"dependencies": {
-		"commander": "^10.0.0"
+		"commander": "^10.0.0",
+		"uuid": "^9.0.0"
 	}
 }

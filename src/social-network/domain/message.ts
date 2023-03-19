@@ -2,12 +2,16 @@ export class Message {
 	private constructor(
 		private readonly _id: string,
 		private readonly _author: string,
-		private readonly _message: MessageText,
+		private _message: MessageText,
 		private readonly _publishedAt: Date,
 	) {}
 
 	public static from(id: string, author: string, message: string, publishedAt: Date) {
 		return new Message(id, author, MessageText.from(message), publishedAt)
+	}
+
+	public editMessage(newMessage: string) {
+		this._message = MessageText.from(newMessage)
 	}
 
 	get properties() {
@@ -21,7 +25,7 @@ export class Message {
 }
 
 class MessageText {
-	private constructor(private readonly _value: string) {}
+	private constructor(private _value: string) {}
 
 	public static from(value: string) {
 		if (value.trim().length === 0) {
@@ -40,3 +44,4 @@ class MessageText {
 
 export class MessageTooLongError extends Error {}
 export class EmptyMessageError extends Error {}
+export class MessageNotFoundError extends Error {}
