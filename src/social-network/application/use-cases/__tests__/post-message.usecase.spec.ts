@@ -1,27 +1,25 @@
-import { InMemoryMessageRepository } from "@infra/repositories/message.inmemory.repository"
-import { type PostMessageCommand, PostMessageUseCase } from "@application/use-cases/post-message.usecase"
-import { StubDateProvider } from "@infra/providers/__tests__/date.stub"
 import { messageBuilder } from "@domain/__tests__/message.builder"
-import { EmptyMessageError, Message, MessageTooLongError } from "@domain/message"
+import { EmptyMessageError, MessageTooLongError } from "@domain/message"
+import { createMessagingFixture, MessagingFixture } from "./messaging.fixture"
 
 describe("Feature: post a message", () => {
-	let sut: SUT
+	let fixture: MessagingFixture
 	beforeEach(() => {
-		sut = createSut()
+		fixture = createMessagingFixture()
 	})
 
 	describe("Rule: a message can't be longer than 280 characters", () => {
 		test("Bob posts a message on his timeline", async () => {
-			sut.givenNoExistingMessage()
-			sut.givenNowIs(new Date("15 Jan 2023"))
+			fixture.givenNoExistingMessage()
+			fixture.givenNowIs(new Date("15 Jan 2023"))
 
-			await sut.whenPostingMessage({
+			await fixture.whenPostingMessage({
 				id: "message_1",
 				author: "Bob",
 				message: "First message from bob :)",
 			})
 
-			sut.thenMessagesShouldBe([
+			fixture.thenMessagesShouldBe([
 				messageBuilder()
 					.withId("message_1")
 					.authoredBy("Bob")
@@ -32,7 +30,7 @@ describe("Feature: post a message", () => {
 		})
 
 		test("Alice posts her second message to her timeline", async () => {
-			sut.givenExistingMessages([
+			fixture.givenExistingMessages([
 				messageBuilder()
 					.withId("message_1")
 					.authoredBy("Alice")
@@ -40,15 +38,15 @@ describe("Feature: post a message", () => {
 					.publishedAt(new Date("14 Jan 2023"))
 					.build(),
 			])
-			sut.givenNowIs(new Date("15 Jan 2023"))
+			fixture.givenNowIs(new Date("15 Jan 2023"))
 
-			await sut.whenPostingMessage({
+			await fixture.whenPostingMessage({
 				id: "message_2",
 				author: "Alice",
 				message: "Second message from Alice :D",
 			})
 
-			sut.thenMessagesShouldBe([
+			fixture.thenMessagesShouldBe([
 				messageBuilder()
 					.withId("message_1")
 					.authoredBy("Alice")
@@ -66,78 +64,43 @@ describe("Feature: post a message", () => {
 
 		test("Bob can't post a message that is longer than 280 characters long", async () => {
 			const messageWith281Chars = "B".repeat(281)
-			sut.givenNoExistingMessage()
+			fixture.givenNoExistingMessage()
 
-			await sut.whenPostingMessage({
+			await fixture.whenPostingMessage({
 				id: "message_1",
 				author: "Bob",
 				message: messageWith281Chars,
 			})
 
-			sut.thenErrorShouldBe(MessageTooLongError)
+			fixture.thenErrorShouldBe(MessageTooLongError)
 		})
 	})
 
 	describe("Rule: messages can't be empty", () => {
 		test("Bob tries to post a message that is empty", async () => {
 			const emptyMessage = ""
-			sut.givenNoExistingMessage()
+			fixture.givenNoExistingMessage()
 
-			await sut.whenPostingMessage({
+			await fixture.whenPostingMessage({
 				id: "message_1",
 				author: "Bob",
 				message: emptyMessage,
 			})
 
-			sut.thenErrorShouldBe(EmptyMessageError)
+			fixture.thenErrorShouldBe(EmptyMessageError)
 		})
 
 		test("Bob tries to post a message that only contains whitespace", async () => {
 			const onlyWhitespaceMessage = "\t\n "
-			sut.givenNoExistingMessage()
+			fixture.givenNoExistingMessage()
 
-			await sut.whenPostingMessage({
+			await fixture.whenPostingMessage({
 				id: "message_1",
 				author: "Bob",
 				message: onlyWhitespaceMessage,
 			})
 
-			sut.thenErrorShouldBe(EmptyMessageError)
+			fixture.thenErrorShouldBe(EmptyMessageError)
 		})
 	})
 })
-
-function createSut() {
-	const messageRepository = new InMemoryMessageRepository()
-	const stubDateProvider = new StubDateProvider()
-	const postMessageUseCase = new PostMessageUseCase(messageRepository, stubDateProvider)
-
-	let error: unknown
-
-	return {
-		givenNowIs(now: Date) {
-			stubDateProvider.currentDate = now
-		},
-		givenExistingMessages(messages: Array<Message>) {
-			messageRepository.setExistingMessages(messages)
-		},
-		givenNoExistingMessage() {
-			messageRepository.setExistingMessages([])
-		},
-		async whenPostingMessage(command: PostMessageCommand) {
-			try {
-				await postMessageUseCase.handle(command)
-			} catch (_error) {
-				error = _error
-			}
-		},
-		thenMessagesShouldBe(messages: Array<Message>) {
-			expect(messageRepository.messages).toStrictEqual(messages)
-		},
-		thenErrorShouldBe(errorInstance: new () => Error) {
-			expect(error).toBeInstanceOf(errorInstance)
-		},
-	}
-}
-
-type SUT = ReturnType<typeof createSut>

@@ -44,4 +44,8 @@ export class FileSystemMessageRepository implements MessageRepository {
 			matchingMessage.publishedAt,
 		)
 	}
+
+	public async getByAuthor(): Promise<Message[]> {
+		return []
+	}
 }

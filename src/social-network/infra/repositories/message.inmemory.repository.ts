@@ -18,6 +18,10 @@ export class InMemoryMessageRepository implements MessageRepository {
 		return this._messagesById.get(id) ?? null
 	}
 
+	public async getByAuthor(author: string) {
+		return this.messages.filter((message) => message.properties.author === author)
+	}
+
 	get messages() {
 		return Array.from(this._messagesById.values())
 	}
