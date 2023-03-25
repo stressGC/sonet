@@ -12,7 +12,7 @@
 		"@typescript-eslint/consistent-type-definitions": ["error", "type"],
 		"@typescript-eslint/explicit-module-boundary-types": 0,
 		"@typescript-eslint/consistent-type-imports": ["error"],
-		"no-console": ["warn"],
+		"no-console": 0,
 		"no-unneeded-ternary": 0,
 		"import/no-extraneous-dependencies": 0,
 		"linebreak-style": 0,
