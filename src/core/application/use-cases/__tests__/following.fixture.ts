@@ -1,6 +1,8 @@
 import { InMemoryFollowRelationRepository } from "@infra/repositories/follow-relation.inmemory.repository"
-import { FollowUserUseCase, type FollowUserCommand } from "../follow-user.usecase"
-import { UnfollowUserUseCase, type UnfollowUserCommand } from "../unfollow-user.usecase"
+import type { FollowUserCommand } from "../follow-user.usecase"
+import { FollowUserUseCase } from "../follow-user.usecase"
+import type { UnfollowUserCommand } from "../unfollow-user.usecase"
+import { UnfollowUserUseCase } from "../unfollow-user.usecase"
 
 export function createFollowingFixture() {
 	const followRelationsRepository = new InMemoryFollowRelationRepository()

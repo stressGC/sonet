@@ -1,6 +1,7 @@
 import { followRelationBuilder } from "@domain/__tests__/follow-relation.builder"
 import { FollowRelationNotFoundError } from "../unfollow-user.usecase"
-import { type FollowingFixture, createFollowingFixture } from "./following.fixture"
+import { createFollowingFixture } from "./following.fixture"
+import type { FollowingFixture } from "./following.fixture"
 
 describe("Feature: unfollow a user", () => {
 	let fixture: FollowingFixture

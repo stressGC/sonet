@@ -1,6 +1,7 @@
 import { followRelationBuilder } from "@domain/__tests__/follow-relation.builder"
 import { FollowRelationExistsError } from "../follow-user.usecase"
-import { createFollowingFixture, FollowingFixture } from "./following.fixture"
+import type { FollowingFixture } from "./following.fixture"
+import { createFollowingFixture } from "./following.fixture"
 
 describe("Feature: follow a user", () => {
 	let fixture: FollowingFixture

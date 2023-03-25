@@ -1,8 +1,11 @@
 import { StubDateProvider } from "@infra/providers/__tests__/date.stub"
 import { InMemoryMessageRepository } from "@infra/repositories/message.inmemory.repository"
-import { EditMessageUseCase, type EditMessageCommand } from "../edit-message.usecase"
-import { PostMessageCommand, PostMessageUseCase } from "../post-message.usecase"
-import { ViewTimelineCommand, ViewTimelineUseCase } from "../view-timeline.usecase"
+import type { EditMessageCommand } from "../edit-message.usecase"
+import { EditMessageUseCase } from "../edit-message.usecase"
+import type { PostMessageCommand } from "../post-message.usecase"
+import { PostMessageUseCase } from "../post-message.usecase"
+import type { ViewTimelineCommand } from "../view-timeline.usecase"
+import { ViewTimelineUseCase } from "../view-timeline.usecase"
 import type { Message } from "@domain/message"
 
 export function createMessagingFixture() {

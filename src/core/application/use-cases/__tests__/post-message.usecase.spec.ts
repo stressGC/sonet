@@ -1,6 +1,7 @@
 import { messageBuilder } from "@domain/__tests__/message.builder"
 import { EmptyMessageError, MessageTooLongError } from "@domain/message"
-import { createMessagingFixture, MessagingFixture } from "./messaging.fixture"
+import type { MessagingFixture } from "./messaging.fixture"
+import { createMessagingFixture } from "./messaging.fixture"
 
 describe("Feature: post a message", () => {
 	let fixture: MessagingFixture
