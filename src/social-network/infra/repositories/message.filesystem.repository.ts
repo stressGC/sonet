@@ -1,7 +1,7 @@
 import * as fs from "fs/promises"
 import path from "path"
 import type { MessageRepository } from "@application/repositories/message.repository"
-import type { Message } from "@domain/message"
+import { Message } from "@domain/message"
 
 export class FileSystemMessageRepository implements MessageRepository {
 	constructor(private readonly filePath: string = path.join(__dirname, "./messages.filesystem.repository.json")) {}
@@ -27,5 +27,25 @@ export class FileSystemMessageRepository implements MessageRepository {
 		} catch (err) {
 			await fs.writeFile(this.filePath, JSON.stringify([]))
 		}
+	}
+
+	public async getById(id: string) {
+		const existingMessages = await this.getMessages()
+		const matchingMessage = existingMessages.find((message) => message.id === id)
+
+		if (!matchingMessage) {
+			return null
+		}
+
+		return Message.from(
+			matchingMessage.id,
+			matchingMessage.author,
+			matchingMessage.message,
+			matchingMessage.publishedAt,
+		)
+	}
+
+	public async getByAuthor(): Promise<Message[]> {
+		return []
 	}
 }

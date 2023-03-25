@@ -3,6 +3,7 @@ import { PostMessageUseCase, type PostMessageCommand } from "@application/use-ca
 import { RealDateProvider } from "@infra/providers/date.provider"
 import { Command } from "commander"
 import { FileSystemMessageRepository } from "@infra/repositories/message.filesystem.repository"
+import { v4 as uuidv4 } from "uuid"
 
 const messageRepository = new FileSystemMessageRepository()
 const dateProvider = new RealDateProvider()
@@ -18,7 +19,7 @@ program
 			.argument("<message>", "the message to post")
 			.action((author, message) => {
 				const postMessageCommand: PostMessageCommand = {
-					id: "some-message-id",
+					id: uuidv4(),
 					author,
 					message,
 				}

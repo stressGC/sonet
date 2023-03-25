@@ -2,17 +2,27 @@ import type { MessageRepository } from "@application/repositories/message.reposi
 import type { Message } from "@domain/message"
 
 export class InMemoryMessageRepository implements MessageRepository {
-	private _messages: Message[] = []
+	private _messagesById = new Map<string, Message>()
 
 	public async save(message: Message) {
-		this._messages = [...this._messages, message]
+		this._messagesById.set(message.properties.id, message)
 	}
 
 	public setExistingMessages(existingMessages: Message[]) {
-		this._messages = existingMessages
+		existingMessages.forEach((message) => {
+			this.save(message)
+		})
+	}
+
+	public async getById(id: string) {
+		return this._messagesById.get(id) ?? null
+	}
+
+	public async getByAuthor(author: string) {
+		return this.messages.filter((message) => message.properties.author === author)
 	}
 
 	get messages() {
-		return this._messages
+		return Array.from(this._messagesById.values())
 	}
 }
