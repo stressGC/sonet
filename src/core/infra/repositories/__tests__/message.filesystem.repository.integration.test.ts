@@ -27,7 +27,7 @@ describe("FileSystemMessageRepository", () => {
 		expect(fileSystemMessages).toStrictEqual([
 			{
 				id: "message_1",
-				publishedAt: "2022-01-14T23:00:00.000Z",
+				publishedAt: "2022-01-15T00:00:00.000Z",
 				message: "Test message",
 				author: "Georges",
 			},
