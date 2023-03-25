@@ -24,7 +24,7 @@ const unfollowUserUseCase = new UnfollowUserUseCase(followRelationsRepository)
 const program = new Command()
 program
 	.version("1.0.0")
-	.description("Social network")
+	.description("Sonet")
 	.addCommand(
 		new Command("post")
 			.argument("<author>", "the current user")

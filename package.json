@@ -1,11 +1,11 @@
 {
-	"name": "tdd-katas",
+	"name": "sonet",
 	"version": "1.0.0",
-	"description": "Following along the book \"Modern C++ Programming with TDD\", but in TypeScript ",
+	"description": "Social network kata, improving my TDD/Clean Archi/DDD skills",
 	"scripts": {
 		"prepare": "is-ci || husky install",
 		"start": "run-s test:unit:watch",
-		"cli": "ts-node -r tsconfig-paths/register src/social-network/cli",
+		"cli": "ts-node -r tsconfig-paths/register src/app/cli",
 		"build": "tsc",
 		"postbuild": "tsc-alias -p tsconfig.json",
 		"test": "run-s test:unit",
@@ -20,18 +20,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/stressgc/tdd-katas.git"
+		"url": "git+https://github.com/stressgc/sonet.git"
 	},
 	"author": "stressgc | Georges Cosson",
 	"license": "UNLICENSED",
 	"bugs": {
-		"url": "https://github.com/stressgc/tdd-katas/issues"
+		"url": "https://github.com/stressgc/sonet/issues"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.16.5",
-		"@babel/preset-env": "7.3.4",
-		"@babel/preset-react": "^7.16.5",
-		"@babel/preset-typescript": "^7.16.5",
 		"@commitlint/cli": "^12.1.1",
 		"@commitlint/config-conventional": "^12.1.1",
 		"@types/jest": "^27.0.3",

@@ -5,8 +5,8 @@ module.exports = {
 	testMatch: ["**/*.(spec|test).ts?(x)"],
 	rootDir: "./src",
 	moduleNameMapper: {
-		"^@application(.*)$": "<rootDir>/social-network/application/$1",
-		"^@domain(.*)$": "<rootDir>/social-network/domain/$1",
-		"^@infra(.*)$": "<rootDir>/social-network/infra/$1",
+		"^@application(.*)$": "<rootDir>/core/application/$1",
+		"^@domain(.*)$": "<rootDir>/core/domain/$1",
+		"^@infra(.*)$": "<rootDir>/core/infra/$1",
 	},
 }
