@@ -5,7 +5,7 @@ import path from "path"
 
 const testMessagesPath = path.join(__dirname, "./messages.test.filesystem.repository.json")
 
-describe.skip("FileSystemMessageRepository", () => {
+describe("FileSystemMessageRepository", () => {
 	beforeEach(async () => {
 		await fs.writeFile(testMessagesPath, JSON.stringify([]))
 	})
