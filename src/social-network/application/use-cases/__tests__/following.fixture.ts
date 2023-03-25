@@ -1,8 +1,8 @@
-import { InMemoryFollowRelationsRepository } from "@infra/repositories/follow-relations.inmemory.repository"
+import { InMemoryFollowRelationRepository } from "@infra/repositories/follow-relation.inmemory.repository"
 import { FollowUserUseCase, type FollowUserCommand } from "../follow-user.usecase"
 
 export function createFollowingFixture() {
-	const followRelationsRepository = new InMemoryFollowRelationsRepository()
+	const followRelationsRepository = new InMemoryFollowRelationRepository()
 	const followUserUseCase = new FollowUserUseCase(followRelationsRepository)
 	let error: unknown
 

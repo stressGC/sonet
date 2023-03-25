@@ -1,5 +1,5 @@
 import type { FollowRelation } from "@domain/follow-relation"
-import type { FollowRelationsRepository } from "@application/repositories/follow-relations.repository"
+import type { FollowRelationRepository } from "@application/repositories/follow-relations.repository"
 
 export type FollowUserCommand = {
 	follower: string
@@ -7,7 +7,7 @@ export type FollowUserCommand = {
 }
 
 export class FollowUserUseCase {
-	constructor(private readonly followRelationsRepository: FollowRelationsRepository) {}
+	constructor(private readonly followRelationsRepository: FollowRelationRepository) {}
 
 	async handle(command: FollowUserCommand) {
 		const followees = await this.followRelationsRepository.getFolloweesOf(command.follower)

@@ -25,6 +25,4 @@ describe("Feature: follow a user", () => {
 			fixture.thenErrorShouldBe(FollowRelationExistsError)
 		})
 	})
-
-	// TODO: unfollow
 })

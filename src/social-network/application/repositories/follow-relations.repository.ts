@@ -1,6 +1,6 @@
 import type { FollowRelation } from "@domain/follow-relation"
 
-export type FollowRelationsRepository = {
+export type FollowRelationRepository = {
 	save: (followRelation: FollowRelation) => Promise<void>
 	getFolloweesOf: (user: string) => Promise<string[]>
 }

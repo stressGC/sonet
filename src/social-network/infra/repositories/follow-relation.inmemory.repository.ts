@@ -1,7 +1,7 @@
-import type { FollowRelationsRepository } from "@application/repositories/follow-relations.repository"
+import type { FollowRelationRepository } from "@application/repositories/follow-relations.repository"
 import type { FollowRelation } from "@domain/follow-relation"
 
-export class InMemoryFollowRelationsRepository implements FollowRelationsRepository {
+export class InMemoryFollowRelationRepository implements FollowRelationRepository {
 	private _followRelations: Array<{
 		follower: string
 		followee: string

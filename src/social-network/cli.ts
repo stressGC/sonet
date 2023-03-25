@@ -1,22 +1,28 @@
 #!/usr/bin/env node
-import { PostMessageUseCase, type PostMessageCommand } from "@application/use-cases/post-message.usecase"
-import { RealDateProvider } from "@infra/providers/date.provider"
 import { Command } from "commander"
-import { FileSystemMessageRepository } from "@infra/repositories/message.filesystem.repository"
 import { v4 as uuidv4 } from "uuid"
-import { ViewTimelineUseCase } from "@application/use-cases/view-timeline.usecase"
-import { EditMessageCommand, EditMessageUseCase } from "@application/use-cases/edit-message.usecase"
+import { RealDateProvider } from "@infra/providers/date.provider"
+import { FileSystemMessageRepository } from "@infra/repositories/message.filesystem.repository"
+import { FileSystemFollowRelationRepository } from "@infra/repositories/follow-relation.filesystem.repository"
+import { ViewTimelineUseCase, type ViewTimelineCommand } from "@application/use-cases/view-timeline.usecase"
+import { PostMessageUseCase, type PostMessageCommand } from "@application/use-cases/post-message.usecase"
+import { EditMessageUseCase, type EditMessageCommand } from "@application/use-cases/edit-message.usecase"
+import { FollowUserUseCase, type FollowUserCommand } from "@application/use-cases/follow-user.usecase"
 
 const messageRepository = new FileSystemMessageRepository()
+const followRelationsRepository = new FileSystemFollowRelationRepository()
+
 const dateProvider = new RealDateProvider()
+
 const postMessageUseCase = new PostMessageUseCase(messageRepository, dateProvider)
 const editMessageUseCase = new EditMessageUseCase(messageRepository)
 const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository, dateProvider)
+const followUserUseCase = new FollowUserUseCase(followRelationsRepository)
 
 const program = new Command()
 program
 	.version("1.0.0")
-	.description("Crafty social network")
+	.description("Social network")
 	.addCommand(
 		new Command("post")
 			.argument("<author>", "the current user")
@@ -58,8 +64,9 @@ program
 	)
 	.addCommand(
 		new Command("view").argument("<user>", "the user to view the timeline of").action(async (user) => {
+			const viewTimelineCommand: ViewTimelineCommand = { user }
 			try {
-				const timeline = await viewTimelineUseCase.handle({ user })
+				const timeline = await viewTimelineUseCase.handle(viewTimelineCommand)
 				console.table(timeline)
 				process.exit(0)
 			} catch (err) {
@@ -67,6 +74,25 @@ program
 				process.exit(1)
 			}
 		}),
+	)
+	.addCommand(
+		new Command("follow")
+			.argument("<follower>", "user that follows")
+			.argument("<followee>", "user that is being followed")
+			.action(async (follower, followee) => {
+				const followUserCommand: FollowUserCommand = {
+					follower,
+					followee,
+				}
+				try {
+					await followUserUseCase.handle(followUserCommand)
+					console.log(`✅ ${followUserCommand.follower} successfully followed ${followUserCommand.followee}`)
+					process.exit(0)
+				} catch (err) {
+					console.error("❌", err)
+					process.exit(1)
+				}
+			}),
 	)
 
 async function main() {
