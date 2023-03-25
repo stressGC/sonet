@@ -5,7 +5,7 @@
 	"scripts": {
 		"prepare": "is-ci || husky install",
 		"start": "run-s test:unit:watch",
-		"cli": "ts-node -r tsconfig-paths/register src/app/cli",
+		"cli": "ts-node -r tsconfig-paths/register src/apps/cli",
 		"build": "tsc",
 		"postbuild": "tsc-alias -p tsconfig.json",
 		"test": "run-s test:unit",

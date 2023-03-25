@@ -12,7 +12,7 @@ describe("Feature: edit a message", () => {
 		test("Bob edits a message of his timeline", async () => {
 			const bobMessageBuilder = messageBuilder()
 				.authoredBy("Bob")
-				.publishedAt(new Date("15 Jan 2020"))
+				.publishedAt(new Date("2022-01-15T00:00:00.000Z"))
 				.withId("message_1")
 			fixture.givenExistingMessages([bobMessageBuilder.withMessage("initial message").build()])
 
@@ -28,13 +28,13 @@ describe("Feature: edit a message", () => {
 			fixture.givenExistingMessages([
 				messageBuilder()
 					.authoredBy("Alice")
-					.publishedAt(new Date("15 Jan 2020"))
+					.publishedAt(new Date("2022-01-15T00:00:00.000Z"))
 					.withId("message_1")
 					.withMessage("Alice message!!")
 					.build(),
 				messageBuilder()
 					.authoredBy("Bob")
-					.publishedAt(new Date("15 Feb 2020"))
+					.publishedAt(new Date("2022-02-15T00:00:00.000Z"))
 					.withId("message_2")
 					.withMessage("Hey I'm Bob!!")
 					.build(),
@@ -55,7 +55,7 @@ describe("Feature: edit a message", () => {
 			fixture.givenExistingMessages([
 				messageBuilder()
 					.authoredBy("Bob")
-					.publishedAt(new Date("15 Jan 2020"))
+					.publishedAt(new Date("2022-01-15T00:00:00.000Z"))
 					.withId("message_1")
 					.withMessage("Hey I'm Bob!")
 					.build(),
@@ -74,7 +74,7 @@ describe("Feature: edit a message", () => {
 			fixture.givenExistingMessages([
 				messageBuilder()
 					.authoredBy("Bob")
-					.publishedAt(new Date("15 Jan 2020"))
+					.publishedAt(new Date("2022-01-15T00:00:00.000Z"))
 					.withId("message_1")
 					.withMessage("Hey I'm Bob!")
 					.build(),
@@ -95,7 +95,7 @@ describe("Feature: edit a message", () => {
 			fixture.givenExistingMessages([
 				messageBuilder()
 					.authoredBy("Bob")
-					.publishedAt(new Date("15 Jan 2020"))
+					.publishedAt(new Date("2022-01-15T00:00:00.000Z"))
 					.withId("message_1")
 					.withMessage("Hey I'm Bob!")
 					.build(),

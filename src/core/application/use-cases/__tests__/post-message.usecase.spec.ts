@@ -11,7 +11,7 @@ describe("Feature: post a message", () => {
 	describe("Rule: a message can't be longer than 280 characters", () => {
 		test("Bob posts a message on his timeline", async () => {
 			fixture.givenNoExistingMessage()
-			fixture.givenNowIs(new Date("15 Jan 2023"))
+			fixture.givenNowIs(new Date("2022-01-15T00:00:00.000Z"))
 
 			await fixture.whenPostingMessage({
 				id: "message_1",
@@ -24,7 +24,7 @@ describe("Feature: post a message", () => {
 					.withId("message_1")
 					.authoredBy("Bob")
 					.withMessage("First message from bob :)")
-					.publishedAt(new Date("15 Jan 2023"))
+					.publishedAt(new Date("2022-01-15T00:00:00.000Z"))
 					.build(),
 			])
 		})
@@ -35,10 +35,10 @@ describe("Feature: post a message", () => {
 					.withId("message_1")
 					.authoredBy("Alice")
 					.withMessage("First message from Alice :)")
-					.publishedAt(new Date("14 Jan 2023"))
+					.publishedAt(new Date("2022-01-14T00:00:00.000Z"))
 					.build(),
 			])
-			fixture.givenNowIs(new Date("15 Jan 2023"))
+			fixture.givenNowIs(new Date("2022-01-15T00:00:00.000Z"))
 
 			await fixture.whenPostingMessage({
 				id: "message_2",
@@ -51,13 +51,13 @@ describe("Feature: post a message", () => {
 					.withId("message_1")
 					.authoredBy("Alice")
 					.withMessage("First message from Alice :)")
-					.publishedAt(new Date("14 Jan 2023"))
+					.publishedAt(new Date("2022-01-14T00:00:00.000Z"))
 					.build(),
 				messageBuilder()
 					.withId("message_2")
 					.authoredBy("Alice")
 					.withMessage("Second message from Alice :D")
-					.publishedAt(new Date("15 Jan 2023"))
+					.publishedAt(new Date("2022-01-15T00:00:00.000Z"))
 					.build(),
 			])
 		})

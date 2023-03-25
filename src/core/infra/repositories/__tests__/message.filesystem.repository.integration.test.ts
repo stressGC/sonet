@@ -17,7 +17,7 @@ describe("FileSystemMessageRepository", () => {
 			messageBuilder()
 				.authoredBy("Georges")
 				.withId("message_1")
-				.publishedAt(new Date("15 Jan 2022"))
+				.publishedAt(new Date("2022-01-15T00:00:00.000Z"))
 				.withMessage("Test message")
 				.build(),
 		)
@@ -41,7 +41,7 @@ describe("FileSystemMessageRepository", () => {
 			messageBuilder()
 				.authoredBy("Georges")
 				.withId("message_1")
-				.publishedAt(new Date("15 Jan 2022"))
+				.publishedAt(new Date("2022-01-15T00:00:00.000Z"))
 				.withMessage("Test message")
 				.build(),
 		)
@@ -50,7 +50,7 @@ describe("FileSystemMessageRepository", () => {
 			messageBuilder()
 				.authoredBy("Georges")
 				.withId("message_2")
-				.publishedAt(new Date("16 Jan 2022"))
+				.publishedAt(new Date("2022-01-16T00:00:00.000Z"))
 				.withMessage("Second message")
 				.build(),
 		)
@@ -60,13 +60,13 @@ describe("FileSystemMessageRepository", () => {
 		expect(fileSystemMessages).toStrictEqual([
 			{
 				id: "message_1",
-				publishedAt: "2022-01-14T23:00:00.000Z",
+				publishedAt: "2022-01-15T00:00:00.000Z",
 				message: "Test message",
 				author: "Georges",
 			},
 			{
 				id: "message_2",
-				publishedAt: "2022-01-15T23:00:00.000Z",
+				publishedAt: "2022-01-16T00:00:00.000Z",
 				message: "Second message",
 				author: "Georges",
 			},

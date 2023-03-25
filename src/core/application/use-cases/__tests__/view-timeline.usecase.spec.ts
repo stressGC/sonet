@@ -14,20 +14,20 @@ describe("Feature: view one's timeline", () => {
 				aliceMessageBuilder
 					.withId("message_1")
 					.withMessage("This is a cool app!")
-					.publishedAt(new Date("15 Jan 2020 8:01 PM"))
+					.publishedAt(new Date("2022-01-15T08:01:00.000Z"))
 					.build(),
 				aliceMessageBuilder
 					.withId("message_2")
 					.withMessage("Hello I'm Alice!")
-					.publishedAt(new Date("15 Jan 2020 8:00 PM"))
+					.publishedAt(new Date("2022-01-15T08:00:00.000Z"))
 					.build(),
 				aliceMessageBuilder
 					.withId("message_3")
 					.withMessage("Anyone from Paris?")
-					.publishedAt(new Date("15 Jan 2020 8:02 PM"))
+					.publishedAt(new Date("2022-01-15T08:02:00.000Z"))
 					.build(),
 			])
-			fixture.givenNowIs(new Date("15 Jan 2020 8:02 PM"))
+			fixture.givenNowIs(new Date("2022-01-15T08:02:00.000Z"))
 
 			await fixture.whenUserSeesTimelineOf({ user: "Alice" })
 
