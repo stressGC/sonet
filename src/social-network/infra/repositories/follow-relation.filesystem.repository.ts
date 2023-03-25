@@ -14,6 +14,17 @@ export class FileSystemFollowRelationRepository implements FollowRelationReposit
 		await this.saveFollowRelations([...followRelations, followRelation])
 	}
 
+	public async remove(followRelationToRemove: FollowRelation) {
+		const followRelations = await this.getFollowRelations()
+		await this.saveFollowRelations(
+			followRelations.filter(
+				(followRelation) =>
+					followRelationToRemove.followee !== followRelation.followee ||
+					followRelationToRemove.follower !== followRelation.follower,
+			),
+		)
+	}
+
 	public async getFolloweesOf(user: string) {
 		const followRelations = await this.getFollowRelations()
 		return followRelations

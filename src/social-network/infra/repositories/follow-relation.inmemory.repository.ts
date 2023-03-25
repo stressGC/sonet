@@ -11,6 +11,14 @@ export class InMemoryFollowRelationRepository implements FollowRelationRepositor
 		this._followRelations = [...this._followRelations, followRelation]
 	}
 
+	public async remove(followRelationToRemove: FollowRelation) {
+		this._followRelations = this._followRelations.filter(
+			(followRelation) =>
+				followRelationToRemove.followee !== followRelation.followee ||
+				followRelationToRemove.follower !== followRelation.follower,
+		)
+	}
+
 	public setExistingFollowRelations(
 		existingFollowRelations: Array<{
 			follower: string

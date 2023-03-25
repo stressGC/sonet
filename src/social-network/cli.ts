@@ -8,9 +8,10 @@ import { ViewTimelineUseCase, type ViewTimelineCommand } from "@application/use-
 import { PostMessageUseCase, type PostMessageCommand } from "@application/use-cases/post-message.usecase"
 import { EditMessageUseCase, type EditMessageCommand } from "@application/use-cases/edit-message.usecase"
 import { FollowUserUseCase, type FollowUserCommand } from "@application/use-cases/follow-user.usecase"
+import { UnfollowUserUseCase, type UnfollowUserCommand } from "@application/use-cases/unfollow-user.usecase"
 
-const messageRepository = new FileSystemMessageRepository()
 const followRelationsRepository = new FileSystemFollowRelationRepository()
+const messageRepository = new FileSystemMessageRepository()
 
 const dateProvider = new RealDateProvider()
 
@@ -18,6 +19,7 @@ const postMessageUseCase = new PostMessageUseCase(messageRepository, dateProvide
 const editMessageUseCase = new EditMessageUseCase(messageRepository)
 const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository, dateProvider)
 const followUserUseCase = new FollowUserUseCase(followRelationsRepository)
+const unfollowUserUseCase = new UnfollowUserUseCase(followRelationsRepository)
 
 const program = new Command()
 program
@@ -87,6 +89,27 @@ program
 				try {
 					await followUserUseCase.handle(followUserCommand)
 					console.log(`✅ ${followUserCommand.follower} successfully followed ${followUserCommand.followee}`)
+					process.exit(0)
+				} catch (err) {
+					console.error("❌", err)
+					process.exit(1)
+				}
+			}),
+	)
+	.addCommand(
+		new Command("unfollow")
+			.argument("<follower>", "user wanting to unfollow")
+			.argument("<followee>", "user to unfollow")
+			.action(async (follower, followee) => {
+				const unfollowUserCommand: UnfollowUserCommand = {
+					follower,
+					followee,
+				}
+				try {
+					await unfollowUserUseCase.handle(unfollowUserCommand)
+					console.log(
+						`✅ ${unfollowUserCommand.follower} successfully unfollowed ${unfollowUserCommand.followee}`,
+					)
 					process.exit(0)
 				} catch (err) {
 					console.error("❌", err)

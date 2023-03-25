@@ -47,4 +47,18 @@ describe("FileSystemFollowRelationRepository", () => {
 			},
 		])
 	})
+
+	it("removes a follow relation from file system", async () => {
+		const fileSystemFollowRelationRepository = new FileSystemFollowRelationRepository(testFollowRelationsPath)
+
+		await fileSystemFollowRelationRepository.save(followRelationBuilder().whereUser("Bob").follows("Alice").build())
+
+		await fileSystemFollowRelationRepository.remove(
+			followRelationBuilder().whereUser("Bob").follows("Alice").build(),
+		)
+
+		const fileContent = await fs.readFile(testFollowRelationsPath)
+		const fileSystemFollowRelations = JSON.parse(fileContent.toString())
+		expect(fileSystemFollowRelations).toStrictEqual([])
+	})
 })
