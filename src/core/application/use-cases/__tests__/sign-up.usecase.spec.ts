@@ -1,159 +1,134 @@
 import { userBuilder } from "@domain/__tests__/user.builder"
-import type { User } from "@domain/user"
 import { PasswordMismatchError } from "@domain/user"
 import { InvalidPasswordError } from "@domain/user"
 import { InvalidUsernameError } from "@domain/user"
-import { InMemoryUserRepository } from "@infra/repositories/user.inmemory.repository"
 
-import type { SignUpCommand } from "../sign-up.usecase"
 import { UnavailableUsernameError } from "../sign-up.usecase"
-import { SignUpUseCase } from "../sign-up.usecase"
+import type { RegisteringFixture } from "./registering.fixture"
+import { createRegisteringFixture } from "./registering.fixture"
 
 describe("Feature: ability to sign up", () => {
-	let fixture: ReturnType<typeof createFixture>
+	let registeringFixture: RegisteringFixture
 	beforeEach(() => {
-		fixture = createFixture()
+		registeringFixture = createRegisteringFixture()
 	})
 
 	describe("Rule: must specify a valid username", () => {
 		test("Bob signs up with valid username 'bob39'", async () => {
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("bob39", "validpassword", "validpassword")
+			await registeringFixture.whenSigningUpWith("bob39", "validpassword", "validpassword")
 
-			fixture.thenUsersShouldBe([userBuilder().withUsername("bob39").withPassword("validpassword").build()])
+			registeringFixture.thenUsersShouldBe([
+				userBuilder().withUsername("bob39").withPassword("validpassword").build(),
+			])
 		})
 
 		test("Bob can't sign up with an invalid username containing invalid characters 'bob@39'", async () => {
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("bob@39", "validpassword", "validpassword")
+			await registeringFixture.whenSigningUpWith("bob@39", "validpassword", "validpassword")
 
-			fixture.thenErrorShouldBe(InvalidUsernameError)
+			registeringFixture.thenErrorShouldBe(InvalidUsernameError)
 		})
 
 		test("Bob can't sign up with an invalid username containing too few characters 'bob'", async () => {
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("bob", "validpassword", "validpassword")
+			await registeringFixture.whenSigningUpWith("b", "validpassword", "validpassword")
 
-			fixture.thenErrorShouldBe(InvalidUsernameError)
+			registeringFixture.thenErrorShouldBe(InvalidUsernameError)
 		})
 
 		test("Bob can't sign up with an invalid username containing many characters", async () => {
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("bob".repeat(50), "validpassword", "validpassword")
+			await registeringFixture.whenSigningUpWith("bob".repeat(50), "validpassword", "validpassword")
 
-			fixture.thenErrorShouldBe(InvalidUsernameError)
+			registeringFixture.thenErrorShouldBe(InvalidUsernameError)
 		})
 
 		test("Bob can't sign up with an invalid username containing uppercase letters", async () => {
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("Bobby", "validpassword", "validpassword")
+			await registeringFixture.whenSigningUpWith("Bobby", "validpassword", "validpassword")
 
-			fixture.thenErrorShouldBe(InvalidUsernameError)
+			registeringFixture.thenErrorShouldBe(InvalidUsernameError)
 		})
 	})
 
 	describe("Rule: must specify a valid password", () => {
 		test("Bob signs up with valid password 'bobbypassword'", async () => {
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
+			await registeringFixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
 
-			fixture.thenUsersShouldBe([userBuilder().withUsername("bob39").withPassword("bobbypassword").build()])
+			registeringFixture.thenUsersShouldBe([
+				userBuilder().withUsername("bob39").withPassword("bobbypassword").build(),
+			])
 		})
 
 		test("Bob can't sign up with invalid password with too few characters 'pass'", async () => {
 			const tooShortPassword = "pass"
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("bob39", tooShortPassword, tooShortPassword)
+			await registeringFixture.whenSigningUpWith("bob39", tooShortPassword, tooShortPassword)
 
-			fixture.thenErrorShouldBe(InvalidPasswordError)
+			registeringFixture.thenErrorShouldBe(InvalidPasswordError)
 		})
 
 		test("Bob can't sign up with an invalid password with too many characters", async () => {
 			const tooLongPassword = "pass".repeat(20)
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("bob39", tooLongPassword, tooLongPassword)
+			await registeringFixture.whenSigningUpWith("bob39", tooLongPassword, tooLongPassword)
 
-			fixture.thenErrorShouldBe(InvalidPasswordError)
+			registeringFixture.thenErrorShouldBe(InvalidPasswordError)
 		})
 	})
 
 	describe("Rule: the confirmation password must match the password", () => {
 		test("Bob signs up with matching password and confirmation password", async () => {
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
+			await registeringFixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
 
-			fixture.thenUsersShouldBe([userBuilder().withUsername("bob39").withPassword("bobbypassword").build()])
+			registeringFixture.thenUsersShouldBe([
+				userBuilder().withUsername("bob39").withPassword("bobbypassword").build(),
+			])
 		})
 
 		test("Bob can't sign up with mismatching passwords", async () => {
-			fixture.givenNoExistingUsers()
+			registeringFixture.givenNoExistingUsers()
 
-			await fixture.whenSigningUpWith("bob39", "bobbypassword", "otherbobbypassword")
+			await registeringFixture.whenSigningUpWith("bob39", "bobbypassword", "otherbobbypassword")
 
-			fixture.thenErrorShouldBe(PasswordMismatchError)
+			registeringFixture.thenErrorShouldBe(PasswordMismatchError)
 		})
 	})
 
 	describe("Rule: the username must be available", () => {
 		test("Bob signs up with an available username", async () => {
-			fixture.givenExistingUsers([userBuilder().withUsername("alice").withPassword("alicepassword").build()])
+			registeringFixture.givenExistingUsers([
+				userBuilder().withUsername("alice").withPassword("alicepassword").build(),
+			])
 
-			await fixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
+			await registeringFixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
 
-			fixture.thenUsersShouldBe([
+			registeringFixture.thenUsersShouldBe([
 				userBuilder().withUsername("alice").withPassword("alicepassword").build(),
 				userBuilder().withUsername("bob39").withPassword("bobbypassword").build(),
 			])
 		})
 
 		test("Bob can't sign up with a username that already exists", async () => {
-			fixture.givenExistingUsers([userBuilder().withUsername("bob39").withPassword("bobpassword").build()])
+			registeringFixture.givenExistingUsers([
+				userBuilder().withUsername("bob39").withPassword("bobpassword").build(),
+			])
 
-			await fixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
+			await registeringFixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
 
-			fixture.thenErrorShouldBe(UnavailableUsernameError)
+			registeringFixture.thenErrorShouldBe(UnavailableUsernameError)
 		})
 	})
 })
-
-function createFixture() {
-	const inMemoryUserRepository = new InMemoryUserRepository()
-	const signUpUseCase = new SignUpUseCase(inMemoryUserRepository)
-	let error: unknown
-
-	return {
-		givenNoExistingUsers() {
-			inMemoryUserRepository.setExistingUsers([])
-		},
-		givenExistingUsers(existingUsers: User[]) {
-			inMemoryUserRepository.setExistingUsers(existingUsers)
-		},
-		async whenSigningUpWith(username: string, password: string, passwordConfirmation: string) {
-			const command: SignUpCommand = {
-				username,
-				password,
-				passwordConfirmation,
-			}
-			try {
-				await signUpUseCase.handle(command)
-			} catch (_error) {
-				error = _error
-			}
-		},
-		thenUsersShouldBe(expectedUsers: User[]) {
-			expect(inMemoryUserRepository.users).toStrictEqual(expectedUsers)
-		},
-		thenErrorShouldBe(errorInstance: new () => Error) {
-			expect(error).toBeInstanceOf(errorInstance)
-		},
-	}
-}

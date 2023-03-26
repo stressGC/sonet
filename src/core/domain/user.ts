@@ -24,7 +24,7 @@ export class User {
 	}
 
 	private static validateUsername(username: string) {
-		const usernameValidationRegex = new RegExp(/^([a-z|\d]){5,20}$/)
+		const usernameValidationRegex = new RegExp(/^([a-z|\d]){3,20}$/)
 		if (!usernameValidationRegex.test(username)) {
 			throw new InvalidUsernameError()
 		}

@@ -6,8 +6,6 @@ import { InMemoryMessageRepository } from "@infra/repositories/message.inmemory.
 
 import type { EditMessageCommand } from "../edit-message.usecase"
 import { EditMessageUseCase } from "../edit-message.usecase"
-import type { PostMessageCommand } from "../post-message.usecase"
-import { PostMessageUseCase } from "../post-message.usecase"
 import type { ViewTimelineCommand } from "../view-timeline.usecase"
 import { ViewTimelineUseCase } from "../view-timeline.usecase"
 
@@ -16,7 +14,6 @@ export function createMessagingFixture() {
 	const stubDateProvider = new StubDateProvider()
 
 	const editMessageUseCase = new EditMessageUseCase(messageRepository)
-	const postMessageUseCase = new PostMessageUseCase(messageRepository, stubDateProvider)
 	const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository)
 
 	const defaultTimelinePresenter = new DefaultTimelinePresenter(stubDateProvider)
@@ -39,13 +36,6 @@ export function createMessagingFixture() {
 		},
 		givenNoExistingMessage() {
 			messageRepository.setExistingMessages([])
-		},
-		async whenPostingMessage(command: PostMessageCommand) {
-			try {
-				await postMessageUseCase.handle(command)
-			} catch (_error) {
-				error = _error
-			}
 		},
 		async whenEditingMessage(command: EditMessageCommand) {
 			try {

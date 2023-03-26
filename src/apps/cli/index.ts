@@ -30,7 +30,7 @@ const dateProvider = new RealDateProvider()
 
 const timelinePresenter = new ConsoleTimelinePresenter(new DefaultTimelinePresenter(dateProvider))
 
-const postMessageUseCase = new PostMessageUseCase(messageRepository, dateProvider)
+const postMessageUseCase = new PostMessageUseCase(messageRepository, userRepository, dateProvider)
 const editMessageUseCase = new EditMessageUseCase(messageRepository)
 const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository)
 const viewWallUseCase = new ViewWallUseCase(messageRepository, followRelationsRepository)
@@ -44,12 +44,14 @@ program
 	.description("Sonet")
 	.addCommand(
 		new Command("post")
-			.argument("<author>", "the current user")
+			.argument("<username>", "username for authentication")
+			.argument("<password>", "password for authentication")
 			.argument("<message>", "the message to post")
-			.action(async (author, message) => {
+			.action(async (username, password, message) => {
 				const postMessageCommand: PostMessageCommand = {
 					id: uuidv4(),
-					author,
+					username,
+					password,
 					message,
 				}
 				try {
