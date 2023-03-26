@@ -1,4 +1,5 @@
 import { InMemoryFollowRelationRepository } from "@infra/repositories/follow-relation.inmemory.repository"
+
 import type { FollowUserCommand } from "../follow-user.usecase"
 import { FollowUserUseCase } from "../follow-user.usecase"
 import type { UnfollowUserCommand } from "../unfollow-user.usecase"

@@ -1,8 +1,8 @@
-import * as fs from "fs/promises"
-import path from "path"
-import { constants } from "fs"
 import type { FollowRelationRepository } from "@application/repositories/follow-relations.repository"
 import type { FollowRelation } from "@domain/follow-relation"
+import { constants } from "fs"
+import * as fs from "fs/promises"
+import path from "path"
 
 export class FileSystemFollowRelationRepository implements FollowRelationRepository {
 	constructor(

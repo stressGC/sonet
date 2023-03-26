@@ -1,6 +1,6 @@
-import { Timeline } from "@domain/timeline"
 import type { TimelinePresenter } from "@application/presenters/timeline.presenter"
 import type { MessageRepository } from "@application/repositories/message.repository"
+import { Timeline } from "@domain/timeline"
 
 export type ViewTimelineCommand = { user: string }
 

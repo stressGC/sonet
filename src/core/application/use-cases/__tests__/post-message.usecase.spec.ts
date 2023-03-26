@@ -1,5 +1,6 @@
 import { messageBuilder } from "@domain/__tests__/message.builder"
 import { EmptyMessageError, MessageTooLongError } from "@domain/message"
+
 import type { MessagingFixture } from "./messaging.fixture"
 import { createMessagingFixture } from "./messaging.fixture"
 

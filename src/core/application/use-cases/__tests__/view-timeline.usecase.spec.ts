@@ -1,6 +1,7 @@
 import { messageBuilder } from "@domain/__tests__/message.builder"
-import { createMessagingFixture } from "./messaging.fixture"
+
 import type { MessagingFixture } from "./messaging.fixture"
+import { createMessagingFixture } from "./messaging.fixture"
 
 describe("Feature: view one's timeline", () => {
 	let fixture: MessagingFixture

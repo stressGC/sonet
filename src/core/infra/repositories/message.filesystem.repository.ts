@@ -1,8 +1,8 @@
-import * as fs from "fs/promises"
-import path from "path"
+import type { MessageRepository } from "@application/repositories/message.repository"
 import { Message } from "@domain/message"
 import { constants } from "fs"
-import type { MessageRepository } from "@application/repositories/message.repository"
+import * as fs from "fs/promises"
+import path from "path"
 
 type PersistedMessage = {
 	id: string

@@ -1,4 +1,5 @@
 import { followRelationBuilder } from "@domain/__tests__/follow-relation.builder"
+
 import { FollowRelationExistsError } from "../follow-user.usecase"
 import type { FollowingFixture } from "./following.fixture"
 import { createFollowingFixture } from "./following.fixture"

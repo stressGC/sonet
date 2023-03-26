@@ -1,6 +1,7 @@
 import { followRelationBuilder } from "@domain/__tests__/follow-relation.builder"
 import * as fs from "fs/promises"
 import path from "path"
+
 import { FileSystemFollowRelationRepository } from "../follow-relation.filesystem.repository"
 
 const testFollowRelationsPath = path.join(__dirname, "./follow-relation.test.filesystem.repository.json")

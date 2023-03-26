@@ -1,5 +1,5 @@
-import { MessageNotFoundError } from "@domain/message"
 import type { MessageRepository } from "@application/repositories/message.repository"
+import { MessageNotFoundError } from "@domain/message"
 
 export type EditMessageCommand = { id: string; message: string }
 

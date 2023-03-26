@@ -1,5 +1,5 @@
-import type { FollowRelation } from "@domain/follow-relation"
 import type { FollowRelationRepository } from "@application/repositories/follow-relations.repository"
+import type { FollowRelation } from "@domain/follow-relation"
 
 export type UnfollowUserCommand = {
 	follower: string

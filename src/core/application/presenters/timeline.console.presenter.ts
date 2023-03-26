@@ -1,4 +1,5 @@
 import type { Timeline } from "@domain/timeline"
+
 import type { DefaultTimelinePresenter } from "./timeline.default.presenter"
 import type { TimelinePresenter } from "./timeline.presenter"
 

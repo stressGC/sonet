@@ -1,14 +1,15 @@
+import { DefaultTimelinePresenter } from "@application/presenters/timeline.default.presenter"
+import type { TimelinePresenter } from "@application/presenters/timeline.presenter"
+import type { Message } from "@domain/message"
 import { StubDateProvider } from "@infra/providers/__tests__/date.stub"
 import { InMemoryMessageRepository } from "@infra/repositories/message.inmemory.repository"
+
 import type { EditMessageCommand } from "../edit-message.usecase"
 import { EditMessageUseCase } from "../edit-message.usecase"
 import type { PostMessageCommand } from "../post-message.usecase"
 import { PostMessageUseCase } from "../post-message.usecase"
 import type { ViewTimelineCommand } from "../view-timeline.usecase"
 import { ViewTimelineUseCase } from "../view-timeline.usecase"
-import type { Message } from "@domain/message"
-import type { TimelinePresenter } from "@application/presenters/timeline.presenter"
-import { DefaultTimelinePresenter } from "@application/presenters/timeline.default.presenter"
 
 export function createMessagingFixture() {
 	const messageRepository = new InMemoryMessageRepository()

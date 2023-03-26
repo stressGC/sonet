@@ -1,7 +1,7 @@
-import { Timeline } from "@domain/timeline"
 import type { TimelinePresenter } from "@application/presenters/timeline.presenter"
 import type { FollowRelationRepository } from "@application/repositories/follow-relations.repository"
 import type { MessageRepository } from "@application/repositories/message.repository"
+import { Timeline } from "@domain/timeline"
 
 export type ViewWallCommand = { user: string }
 

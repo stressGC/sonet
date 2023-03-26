@@ -1,6 +1,6 @@
-import { Message } from "@domain/message"
 import type { DateProvider } from "@application/providers/date.provider"
 import type { MessageRepository } from "@application/repositories/message.repository"
+import { Message } from "@domain/message"
 
 export type PostMessageCommand = { id: string; author: string; message: string }
 

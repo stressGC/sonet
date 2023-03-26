@@ -5,6 +5,7 @@ import type { MessageRepository } from "@application/repositories/message.reposi
 import { followRelationBuilder } from "@domain/__tests__/follow-relation.builder"
 import { messageBuilder } from "@domain/__tests__/message.builder"
 import { StubDateProvider } from "@infra/providers/__tests__/date.stub"
+
 import { ViewWallUseCase } from "../view-wall.usecase"
 import type { FollowingFixture } from "./following.fixture"
 import { createFollowingFixture } from "./following.fixture"
