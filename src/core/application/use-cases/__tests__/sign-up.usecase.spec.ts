@@ -6,6 +6,7 @@ import { InvalidUsernameError } from "@domain/user"
 import { InMemoryUserRepository } from "@infra/repositories/user.inmemory.repository"
 
 import type { SignUpCommand } from "../sign-up.usecase"
+import { UnavailableUsernameError } from "../sign-up.usecase"
 import { SignUpUseCase } from "../sign-up.usecase"
 
 describe("Feature: ability to sign up", () => {
@@ -101,6 +102,27 @@ describe("Feature: ability to sign up", () => {
 			fixture.thenErrorShouldBe(PasswordMismatchError)
 		})
 	})
+
+	describe("Rule: the username must be available", () => {
+		test("Bob signs up with an available username", async () => {
+			fixture.givenExistingUsers([userBuilder().withUsername("alice").withPassword("alicepassword").build()])
+
+			await fixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
+
+			fixture.thenUsersShouldBe([
+				userBuilder().withUsername("alice").withPassword("alicepassword").build(),
+				userBuilder().withUsername("bob39").withPassword("bobbypassword").build(),
+			])
+		})
+
+		test("Bob can't sign up with a username that already exists", async () => {
+			fixture.givenExistingUsers([userBuilder().withUsername("bob39").withPassword("bobpassword").build()])
+
+			await fixture.whenSigningUpWith("bob39", "bobbypassword", "bobbypassword")
+
+			fixture.thenErrorShouldBe(UnavailableUsernameError)
+		})
+	})
 })
 
 function createFixture() {
@@ -111,6 +133,9 @@ function createFixture() {
 	return {
 		givenNoExistingUsers() {
 			inMemoryUserRepository.setExistingUsers([])
+		},
+		givenExistingUsers(existingUsers: User[]) {
+			inMemoryUserRepository.setExistingUsers(existingUsers)
 		},
 		async whenSigningUpWith(username: string, password: string, passwordConfirmation: string) {
 			const command: SignUpCommand = {

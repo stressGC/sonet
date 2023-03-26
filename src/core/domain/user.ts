@@ -12,6 +12,10 @@ export class User {
 		return new User(validatedUsername, validatedPassword)
 	}
 
+	public static fromProperties(username: string, password: string) {
+		return new User(username, password)
+	}
+
 	public get properties() {
 		return {
 			username: this.username,

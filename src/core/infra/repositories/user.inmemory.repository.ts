@@ -8,6 +8,10 @@ export class InMemoryUserRepository implements UserRepository {
 		this._users = [...this._users, user]
 	}
 
+	public async getByUsername(username: string) {
+		return this._users.find((user) => user.properties.username === username) ?? null
+	}
+
 	public get users() {
 		return this._users
 	}

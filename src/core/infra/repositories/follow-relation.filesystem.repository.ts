@@ -1,22 +1,24 @@
 import type { FollowRelationRepository } from "@application/repositories/follow-relations.repository"
 import type { FollowRelation } from "@domain/follow-relation"
-import { constants } from "fs"
-import * as fs from "fs/promises"
 import path from "path"
 
-export class FileSystemFollowRelationRepository implements FollowRelationRepository {
-	constructor(
-		private readonly filePath: string = path.join(__dirname, "./follow-relation.filesystem.repository.json"),
-	) {}
+import { FileSystemEntityRepository } from "./filesystem.repository.helper"
+
+export class FileSystemFollowRelationRepository
+	extends FileSystemEntityRepository<FollowRelation, FollowRelation>
+	implements FollowRelationRepository
+{
+	constructor(filePath: string = path.join(__dirname, "./user.filesystem.repository.json")) {
+		super(filePath)
+	}
 
 	public async save(followRelation: FollowRelation) {
-		const followRelations = await this.getFollowRelations()
-		await this.saveFollowRelations([...followRelations, followRelation])
+		await this.saveOne(followRelation)
 	}
 
 	public async remove(followRelationToRemove: FollowRelation) {
-		const followRelations = await this.getFollowRelations()
-		await this.saveFollowRelations(
+		const followRelations = await this.getAllEntities()
+		await this.saveAllEntites(
 			followRelations.filter(
 				(followRelation) =>
 					followRelationToRemove.followee !== followRelation.followee ||
@@ -26,28 +28,9 @@ export class FileSystemFollowRelationRepository implements FollowRelationReposit
 	}
 
 	public async getFolloweesOf(user: string) {
-		const followRelations = await this.getFollowRelations()
+		const followRelations = await this.getAllEntities()
 		return followRelations
 			.filter((followRelation) => followRelation.follower === user)
 			.map((followRelation) => followRelation.followee)
-	}
-
-	private async saveFollowRelations(followRelations: FollowRelation[]) {
-		await fs.writeFile(this.filePath, JSON.stringify(followRelations))
-	}
-
-	private async getFollowRelations(): Promise<Array<FollowRelation>> {
-		await this.initializeFile()
-		const fileContent = await fs.readFile(this.filePath)
-		const persistedFollowRelations = JSON.parse(fileContent.toString()) as Array<FollowRelation>
-		return persistedFollowRelations
-	}
-
-	private async initializeFile() {
-		try {
-			await fs.access(this.filePath, constants.R_OK | constants.W_OK)
-		} catch (err) {
-			await fs.writeFile(this.filePath, JSON.stringify([]))
-		}
 	}
 }

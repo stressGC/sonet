@@ -18,13 +18,13 @@ import { ViewWallUseCase } from "@application/use-cases/view-wall.usecase"
 import { RealDateProvider } from "@infra/providers/date.provider"
 import { FileSystemFollowRelationRepository } from "@infra/repositories/follow-relation.filesystem.repository"
 import { FileSystemMessageRepository } from "@infra/repositories/message.filesystem.repository"
-import { InMemoryUserRepository } from "@infra/repositories/user.inmemory.repository"
+import { FileSystemUserRepository } from "@infra/repositories/user.filesystem.repository"
 import { Command } from "commander"
 import { v4 as uuidv4 } from "uuid"
 
 const followRelationsRepository = new FileSystemFollowRelationRepository()
 const messageRepository = new FileSystemMessageRepository()
-const userRepository = new InMemoryUserRepository()
+const userRepository = new FileSystemUserRepository()
 
 const dateProvider = new RealDateProvider()
 
