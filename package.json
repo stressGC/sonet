@@ -5,7 +5,6 @@
 	"scripts": {
 		"prepare": "is-ci || husky install",
 		"start": "run-s test:unit:watch",
-		"cli": "ts-node -r tsconfig-paths/register src/apps/cli",
 		"build": "tsc",
 		"postbuild": "tsc-alias -p tsconfig.json",
 		"test": "run-s test:unit",
@@ -16,7 +15,7 @@
 		"prettify": "prettier . --write",
 		"lint": "eslint 'src/**/*.ts' --max-warnings=0",
 		"typecheck": "tsc --diagnostics",
-		"check": "run-p lint typecheck"
+		"check": "run-p lint typecheck test:unit test:integration"
 	},
 	"repository": {
 		"type": "git",

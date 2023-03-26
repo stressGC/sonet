@@ -7,6 +7,8 @@ import { PostMessageUseCase } from "../post-message.usecase"
 import type { ViewTimelineCommand } from "../view-timeline.usecase"
 import { ViewTimelineUseCase } from "../view-timeline.usecase"
 import type { Message } from "@domain/message"
+import type { TimelinePresenter } from "@application/presenters/timeline.presenter"
+import { DefaultTimelinePresenter } from "@application/presenters/timeline.default.presenter"
 
 export function createMessagingFixture() {
 	const messageRepository = new InMemoryMessageRepository()
@@ -14,7 +16,15 @@ export function createMessagingFixture() {
 
 	const editMessageUseCase = new EditMessageUseCase(messageRepository)
 	const postMessageUseCase = new PostMessageUseCase(messageRepository, stubDateProvider)
-	const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository, stubDateProvider)
+	const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository)
+
+	const defaultTimelinePresenter = new DefaultTimelinePresenter(stubDateProvider)
+
+	const timelinePresenter: TimelinePresenter = {
+		show(_timeline) {
+			timeline = defaultTimelinePresenter.show(_timeline)
+		},
+	}
 
 	let error: unknown
 	let timeline: Array<{ author: string; message: string; publicationLabel: string }>
@@ -43,10 +53,9 @@ export function createMessagingFixture() {
 				error = _error
 			}
 		},
-
 		async whenUserSeesTimelineOf(command: ViewTimelineCommand) {
 			try {
-				timeline = await viewTimelineUseCase.handle(command)
+				await viewTimelineUseCase.handle(command, timelinePresenter)
 			} catch (_error) {
 				error = _error
 			}

@@ -8,5 +8,6 @@ module.exports = {
 		"^@application(.*)$": "<rootDir>/core/application/$1",
 		"^@domain(.*)$": "<rootDir>/core/domain/$1",
 		"^@infra(.*)$": "<rootDir>/core/infra/$1",
+		"^@cli(.*)$": "<rootDir>/apps/cli/$1",
 	},
 }

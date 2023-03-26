@@ -14,15 +14,19 @@ import type { FollowUserCommand } from "@application/use-cases/follow-user.useca
 import { FollowUserUseCase } from "@application/use-cases/follow-user.usecase"
 import type { UnfollowUserCommand } from "@application/use-cases/unfollow-user.usecase"
 import { UnfollowUserUseCase } from "@application/use-cases/unfollow-user.usecase"
+import { DefaultTimelinePresenter } from "@application/presenters/timeline.default.presenter"
+import { ConsoleTimelinePresenter } from "@application/presenters/timeline.console.presenter"
 
 const followRelationsRepository = new FileSystemFollowRelationRepository()
 const messageRepository = new FileSystemMessageRepository()
 
 const dateProvider = new RealDateProvider()
 
+const timelinePresenter = new ConsoleTimelinePresenter(new DefaultTimelinePresenter(dateProvider))
+
 const postMessageUseCase = new PostMessageUseCase(messageRepository, dateProvider)
 const editMessageUseCase = new EditMessageUseCase(messageRepository)
-const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository, dateProvider)
+const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository)
 const followUserUseCase = new FollowUserUseCase(followRelationsRepository)
 const unfollowUserUseCase = new UnfollowUserUseCase(followRelationsRepository)
 
@@ -73,7 +77,7 @@ program
 		new Command("view").argument("<user>", "the user to view the timeline of").action(async (user) => {
 			const viewTimelineCommand: ViewTimelineCommand = { user }
 			try {
-				const timeline = await viewTimelineUseCase.handle(viewTimelineCommand)
+				const timeline = await viewTimelineUseCase.handle(viewTimelineCommand, timelinePresenter)
 				console.table(timeline)
 				process.exit(0)
 			} catch (err) {
