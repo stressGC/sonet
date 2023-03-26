@@ -4,7 +4,7 @@ import path from "path"
 
 import { FileSystemEntityRepository } from "./filesystem.repository.helper"
 
-type PersistedMessage = {
+type SerializedMessage = {
 	id: string
 	author: string
 	message: string
@@ -12,7 +12,7 @@ type PersistedMessage = {
 }
 
 export class FileSystemMessageRepository
-	extends FileSystemEntityRepository<Message, PersistedMessage>
+	extends FileSystemEntityRepository<Message, SerializedMessage>
 	implements MessageRepository
 {
 	constructor(filePath: string = path.join(__dirname, "./user.filesystem.repository.json")) {
@@ -24,12 +24,12 @@ export class FileSystemMessageRepository
 				message: message.properties.message,
 				publishedAt: message.properties.publishedAt.toISOString(),
 			}),
-			(persistedMessage) =>
+			(serializedMessage) =>
 				Message.from(
-					persistedMessage.id,
-					persistedMessage.author,
-					persistedMessage.message,
-					new Date(persistedMessage.publishedAt),
+					serializedMessage.id,
+					serializedMessage.author,
+					serializedMessage.message,
+					new Date(serializedMessage.publishedAt),
 				),
 		)
 	}

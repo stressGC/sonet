@@ -1,28 +1,30 @@
 import type { MessageRepository } from "@application/repositories/message.repository"
 import type { Message } from "@domain/message"
 
-export class InMemoryMessageRepository implements MessageRepository {
-	private _messagesById = new Map<string, Message>()
+import { InMemoryEntityRepository } from "./inmemory.repository.helper"
+
+export class InMemoryMessageRepository extends InMemoryEntityRepository<Message> implements MessageRepository {
+	public constructor() {
+		super((message) => message.properties.id)
+	}
 
 	public async save(message: Message) {
-		this._messagesById.set(message.properties.id, message)
+		this.saveOne(message)
 	}
 
 	public setExistingMessages(existingMessages: Message[]) {
-		existingMessages.forEach((message) => {
-			this.save(message)
-		})
+		this.setExisting(existingMessages)
 	}
 
 	public async getById(id: string) {
-		return this._messagesById.get(id) ?? null
+		return this.findByPredicate((message) => message.properties.id === id)
 	}
 
 	public async getByAuthor(author: string) {
-		return this.messages.filter((message) => message.properties.author === author)
+		return this.filterByPredicate((message) => message.properties.author === author)
 	}
 
 	get messages() {
-		return Array.from(this._messagesById.values())
+		return this.entities
 	}
 }

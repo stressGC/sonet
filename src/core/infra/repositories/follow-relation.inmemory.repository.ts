@@ -1,35 +1,30 @@
 import type { FollowRelationRepository } from "@application/repositories/follow-relations.repository"
 import type { FollowRelation } from "@domain/follow-relation"
 
-export class InMemoryFollowRelationRepository implements FollowRelationRepository {
-	private _followRelations: Array<{
-		follower: string
-		followee: string
-	}> = []
+import { InMemoryEntityRepository } from "./inmemory.repository.helper"
 
+export class InMemoryFollowRelationRepository
+	extends InMemoryEntityRepository<FollowRelation>
+	implements FollowRelationRepository
+{
 	public async save(followRelation: FollowRelation) {
-		this._followRelations = [...this._followRelations, followRelation]
+		this.saveOne(followRelation)
 	}
 
 	public async remove(followRelationToRemove: FollowRelation) {
-		this._followRelations = this._followRelations.filter(
+		this.removeByPredicate(
 			(followRelation) =>
 				followRelationToRemove.followee !== followRelation.followee ||
 				followRelationToRemove.follower !== followRelation.follower,
 		)
 	}
 
-	public setExistingFollowRelations(
-		existingFollowRelations: Array<{
-			follower: string
-			followee: string
-		}>,
-	) {
-		this._followRelations = existingFollowRelations
+	public setExistingFollowRelations(existingFollowRelations: FollowRelation[]) {
+		this.setExisting(existingFollowRelations)
 	}
 
 	public async getFolloweesOf(user: string) {
-		const followees = this._followRelations.filter((followRelation) => followRelation.follower === user)
+		const followees = this.filterByPredicate((followRelation) => followRelation.follower === user)
 		return followees.map((followRelation) => followRelation.followee)
 	}
 }
