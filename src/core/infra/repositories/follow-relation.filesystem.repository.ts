@@ -2,10 +2,10 @@ import type { FollowRelationRepository } from "@application/repositories/follow-
 import type { FollowRelation } from "@domain/follow-relation"
 import path from "path"
 
-import { FileSystemEntityRepository } from "./filesystem.repository.helper"
+import { FileSystemRepositoryHelper } from "./filesystem.repository.helper"
 
 export class FileSystemFollowRelationRepository
-	extends FileSystemEntityRepository<FollowRelation, FollowRelation>
+	extends FileSystemRepositoryHelper<FollowRelation, FollowRelation>
 	implements FollowRelationRepository
 {
 	constructor(filePath: string = path.join(__dirname, "./user.filesystem.repository.json")) {

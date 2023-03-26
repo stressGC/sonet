@@ -1,9 +1,9 @@
 import type { MessageRepository } from "@application/repositories/message.repository"
 import type { Message } from "@domain/message"
 
-import { InMemoryEntityRepository } from "./inmemory.repository.helper"
+import { InMemoryRepositoryHelper } from "./inmemory.repository.helper"
 
-export class InMemoryMessageRepository extends InMemoryEntityRepository<Message> implements MessageRepository {
+export class InMemoryMessageRepository extends InMemoryRepositoryHelper<Message> implements MessageRepository {
 	public constructor() {
 		super((message) => message.properties.id)
 	}

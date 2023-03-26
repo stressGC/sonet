@@ -2,10 +2,10 @@ import type { UserRepository } from "@application/repositories/user.repository"
 import { User } from "@domain/user"
 import path from "path"
 
-import { FileSystemEntityRepository } from "./filesystem.repository.helper"
+import { FileSystemRepositoryHelper } from "./filesystem.repository.helper"
 
 export class FileSystemUserRepository
-	extends FileSystemEntityRepository<User, User["properties"]>
+	extends FileSystemRepositoryHelper<User, User["properties"]>
 	implements UserRepository
 {
 	constructor(filePath: string = path.join(__dirname, "./user.filesystem.repository.json")) {

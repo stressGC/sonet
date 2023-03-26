@@ -1,10 +1,10 @@
 import type { FollowRelationRepository } from "@application/repositories/follow-relations.repository"
 import type { FollowRelation } from "@domain/follow-relation"
 
-import { InMemoryEntityRepository } from "./inmemory.repository.helper"
+import { InMemoryRepositoryHelper } from "./inmemory.repository.helper"
 
 export class InMemoryFollowRelationRepository
-	extends InMemoryEntityRepository<FollowRelation>
+	extends InMemoryRepositoryHelper<FollowRelation>
 	implements FollowRelationRepository
 {
 	public async save(followRelation: FollowRelation) {

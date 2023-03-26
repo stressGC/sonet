@@ -2,7 +2,7 @@ import type { MessageRepository } from "@application/repositories/message.reposi
 import { Message } from "@domain/message"
 import path from "path"
 
-import { FileSystemEntityRepository } from "./filesystem.repository.helper"
+import { FileSystemRepositoryHelper } from "./filesystem.repository.helper"
 
 type SerializedMessage = {
 	id: string
@@ -12,7 +12,7 @@ type SerializedMessage = {
 }
 
 export class FileSystemMessageRepository
-	extends FileSystemEntityRepository<Message, SerializedMessage>
+	extends FileSystemRepositoryHelper<Message, SerializedMessage>
 	implements MessageRepository
 {
 	constructor(filePath: string = path.join(__dirname, "./user.filesystem.repository.json")) {

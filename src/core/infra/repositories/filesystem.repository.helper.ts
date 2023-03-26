@@ -1,7 +1,7 @@
 import { constants } from "fs"
 import * as fs from "fs/promises"
 
-export class FileSystemEntityRepository<EntityType, SerializedEntityType> {
+export class FileSystemRepositoryHelper<EntityType, SerializedEntityType> {
 	public constructor(
 		private readonly filePath: string,
 		private readonly serialize: (entity: EntityType) => SerializedEntityType = (data) =>

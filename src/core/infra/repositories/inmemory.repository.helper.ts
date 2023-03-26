@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/ban-types
-export class InMemoryEntityRepository<EntityType> {
+export class InMemoryRepositoryHelper<EntityType> {
 	private _entities: EntityType[] = []
 
 	constructor(private readonly getPrimaryKey?: (entity: EntityType) => string) {}

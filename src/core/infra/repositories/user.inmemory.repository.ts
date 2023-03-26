@@ -1,9 +1,9 @@
 import type { UserRepository } from "@application/repositories/user.repository"
 import type { User } from "@domain/user"
 
-import { InMemoryEntityRepository } from "./inmemory.repository.helper"
+import { InMemoryRepositoryHelper } from "./inmemory.repository.helper"
 
-export class InMemoryUserRepository extends InMemoryEntityRepository<User> implements UserRepository {
+export class InMemoryUserRepository extends InMemoryRepositoryHelper<User> implements UserRepository {
 	public async save(user: User) {
 		this.saveOne(user)
 	}
