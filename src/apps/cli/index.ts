@@ -7,6 +7,8 @@ import type { FollowUserCommand } from "@application/use-cases/follow-user.useca
 import { FollowUserUseCase } from "@application/use-cases/follow-user.usecase"
 import type { PostMessageCommand } from "@application/use-cases/post-message.usecase"
 import { PostMessageUseCase } from "@application/use-cases/post-message.usecase"
+import type { SignUpCommand } from "@application/use-cases/sign-up.usecase"
+import { SignUpUseCase } from "@application/use-cases/sign-up.usecase"
 import type { UnfollowUserCommand } from "@application/use-cases/unfollow-user.usecase"
 import { UnfollowUserUseCase } from "@application/use-cases/unfollow-user.usecase"
 import type { ViewTimelineCommand } from "@application/use-cases/view-timeline.usecase"
@@ -16,11 +18,13 @@ import { ViewWallUseCase } from "@application/use-cases/view-wall.usecase"
 import { RealDateProvider } from "@infra/providers/date.provider"
 import { FileSystemFollowRelationRepository } from "@infra/repositories/follow-relation.filesystem.repository"
 import { FileSystemMessageRepository } from "@infra/repositories/message.filesystem.repository"
+import { InMemoryUserRepository } from "@infra/repositories/user.inmemory.repository"
 import { Command } from "commander"
 import { v4 as uuidv4 } from "uuid"
 
 const followRelationsRepository = new FileSystemFollowRelationRepository()
 const messageRepository = new FileSystemMessageRepository()
+const userRepository = new InMemoryUserRepository()
 
 const dateProvider = new RealDateProvider()
 
@@ -32,6 +36,7 @@ const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository)
 const viewWallUseCase = new ViewWallUseCase(messageRepository, followRelationsRepository)
 const followUserUseCase = new FollowUserUseCase(followRelationsRepository)
 const unfollowUserUseCase = new UnfollowUserUseCase(followRelationsRepository)
+const signUpUseCase = new SignUpUseCase(userRepository)
 
 const program = new Command()
 program
@@ -133,6 +138,27 @@ program
 					console.log(
 						`✅ ${unfollowUserCommand.follower} successfully unfollowed ${unfollowUserCommand.followee}`,
 					)
+					process.exit(0)
+				} catch (err) {
+					console.error("❌", err)
+					process.exit(1)
+				}
+			}),
+	)
+	.addCommand(
+		new Command("signup")
+			.argument("<username>", "username to sign up with")
+			.argument("<password>", "password to sign up with")
+			.argument("<confirmation-password>", "confirmation of your password")
+			.action(async (username, password, passwordConfirmation) => {
+				const signUpCommand: SignUpCommand = {
+					username,
+					password,
+					passwordConfirmation,
+				}
+				try {
+					await signUpUseCase.handle(signUpCommand)
+					console.log(`✅ ${signUpCommand.username} successfully signed up to Sonet!`)
 					process.exit(0)
 				} catch (err) {
 					console.error("❌", err)
