@@ -48,8 +48,6 @@ Implement a console-based social networking application (similar to Twitter) sat
 TODO:
 
 -   sign up
--   timeline presenter
--   view wall
 -   API
 -   postgre database
 -   frontend

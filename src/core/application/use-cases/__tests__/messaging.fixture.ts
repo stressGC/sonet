@@ -69,6 +69,7 @@ export function createMessagingFixture() {
 		thenUserShouldSee(expectedTimeline: Array<{ author: string; message: string; publicationLabel: string }>) {
 			expect(timeline).toEqual(expectedTimeline)
 		},
+		messageRepository,
 	}
 }
 

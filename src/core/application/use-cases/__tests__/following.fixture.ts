@@ -5,14 +5,14 @@ import type { UnfollowUserCommand } from "../unfollow-user.usecase"
 import { UnfollowUserUseCase } from "../unfollow-user.usecase"
 
 export function createFollowingFixture() {
-	const followRelationsRepository = new InMemoryFollowRelationRepository()
-	const followUserUseCase = new FollowUserUseCase(followRelationsRepository)
-	const unfollowUserUseCase = new UnfollowUserUseCase(followRelationsRepository)
+	const followRelationRepository = new InMemoryFollowRelationRepository()
+	const followUserUseCase = new FollowUserUseCase(followRelationRepository)
+	const unfollowUserUseCase = new UnfollowUserUseCase(followRelationRepository)
 	let error: unknown
 
 	return {
 		givenNoExistingFollowRelations() {
-			followRelationsRepository.setExistingFollowRelations([])
+			followRelationRepository.setExistingFollowRelations([])
 		},
 		givenExistingFollowRelations(
 			existingFollowRelations: Array<{
@@ -20,7 +20,7 @@ export function createFollowingFixture() {
 				followee: string
 			}>,
 		) {
-			followRelationsRepository.setExistingFollowRelations(existingFollowRelations)
+			followRelationRepository.setExistingFollowRelations(existingFollowRelations)
 		},
 		whenUser(user: string) {
 			return {
@@ -48,10 +48,11 @@ export function createFollowingFixture() {
 		thenUser(user: string) {
 			return {
 				async shouldFollowUsers(expectedFollowees: string[]) {
-					expect(await followRelationsRepository.getFolloweesOf(user)).toStrictEqual(expectedFollowees)
+					expect(await followRelationRepository.getFolloweesOf(user)).toStrictEqual(expectedFollowees)
 				},
 			}
 		},
+		followRelationRepository,
 	}
 }
 

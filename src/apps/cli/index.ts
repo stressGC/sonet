@@ -16,6 +16,8 @@ import type { UnfollowUserCommand } from "@application/use-cases/unfollow-user.u
 import { UnfollowUserUseCase } from "@application/use-cases/unfollow-user.usecase"
 import { DefaultTimelinePresenter } from "@application/presenters/timeline.default.presenter"
 import { ConsoleTimelinePresenter } from "@application/presenters/timeline.console.presenter"
+import type { ViewWallCommand } from "@application/use-cases/view-wall.usecase"
+import { ViewWallUseCase } from "@application/use-cases/view-wall.usecase"
 
 const followRelationsRepository = new FileSystemFollowRelationRepository()
 const messageRepository = new FileSystemMessageRepository()
@@ -27,6 +29,7 @@ const timelinePresenter = new ConsoleTimelinePresenter(new DefaultTimelinePresen
 const postMessageUseCase = new PostMessageUseCase(messageRepository, dateProvider)
 const editMessageUseCase = new EditMessageUseCase(messageRepository)
 const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository)
+const viewWallUseCase = new ViewWallUseCase(messageRepository, followRelationsRepository)
 const followUserUseCase = new FollowUserUseCase(followRelationsRepository)
 const unfollowUserUseCase = new UnfollowUserUseCase(followRelationsRepository)
 
@@ -74,11 +77,22 @@ program
 			}),
 	)
 	.addCommand(
-		new Command("view").argument("<user>", "the user to view the timeline of").action(async (user) => {
+		new Command("timeline").argument("<user>", "the user to view the timeline of").action(async (user) => {
 			const viewTimelineCommand: ViewTimelineCommand = { user }
 			try {
-				const timeline = await viewTimelineUseCase.handle(viewTimelineCommand, timelinePresenter)
-				console.table(timeline)
+				await viewTimelineUseCase.handle(viewTimelineCommand, timelinePresenter)
+				process.exit(0)
+			} catch (err) {
+				console.error(err)
+				process.exit(1)
+			}
+		}),
+	)
+	.addCommand(
+		new Command("wall").argument("<user>", "the user to view the wall of").action(async (user) => {
+			const viewWallCommand: ViewWallCommand = { user }
+			try {
+				await viewWallUseCase.handle(viewWallCommand, timelinePresenter)
 				process.exit(0)
 			} catch (err) {
 				console.error(err)
